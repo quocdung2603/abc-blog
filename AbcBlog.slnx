@@ -1,1 +1,6 @@
-<Solution />
+<Solution>
+  <Project Path="src/AbcBlog.Api/AbcBlog.Api.csproj" />
+  <Project Path="src/AbcBlog.Core/AbcBlog.Core.csproj" />
+  <Project Path="src/AbcBlog.Data/AbcBlog.Data.csproj" />
+  <Project Path="src/AbcBlog.WebApp/AbcBlog.WebApp.csproj" />
+</Solution>
