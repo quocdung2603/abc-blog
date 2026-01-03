@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AbcBlog.Data
+namespace AbcBlog.Core
 {
     public class AbcBlogContextFactory : IDesignTimeDbContextFactory<AbcBlogContext>
     {

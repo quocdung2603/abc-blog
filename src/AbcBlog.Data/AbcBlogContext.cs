@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AbcBlog.Data
+namespace AbcBlog.Core
 {
     public class AbcBlogContext : IdentityDbContext<AppUser, AppRole, Guid>
     {
@@ -32,29 +32,6 @@ namespace AbcBlog.Data
             builder.Entity<IdentityUserLogin<Guid>>().ToTable("AppUserLogins").HasKey(x => x.UserId);
             builder.Entity<IdentityUserRole<Guid>>().ToTable("AppUserRoles").HasKey(x => new { x.RoleId, x.UserId });
             builder.Entity<IdentityUserToken<Guid>>().ToTable("AppUserTokens").HasKey(x => new { x.UserId });
-        }
-
-        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
-        {
-            var entries = ChangeTracker.Entries().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
-
-            foreach (var entityEntry in entries)
-            {
-                var dateCreatedProp = entityEntry.Entity.GetType().GetProperty("DateCreated");
-                if (entityEntry.State == EntityState.Added && dateCreatedProp != null)
-                {
-                    dateCreatedProp.SetValue(entityEntry.Entity, DateTime.Now);
-                }
-
-                var dateModifiedProp = entityEntry.Entity.GetType().GetProperty("DateModified");
-                if (entityEntry.State == EntityState.Modified && dateModifiedProp != null)
-                {
-                    dateModifiedProp.SetValue(entityEntry.Entity, DateTime.Now);
-                }
-
-            }
-
-            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }
