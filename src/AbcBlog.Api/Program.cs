@@ -1,11 +1,14 @@
 using AbcBlog.Api;
-using AbcBlog.Core.Domain.Identity;
 using AbcBlog.Core;
+using AbcBlog.Core.Domain.Identity;
+using AbcBlog.Core.Models.Content;
+using AbcBlog.Core.SeedWorks;
+using AbcBlog.Data.Repositories;
+using AbcBlog.Data.SeedWorks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using AbcBlog.Core.SeedWorks;
-using AbcBlog.Data.SeedWorks;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -42,12 +45,45 @@ builder.Services.Configure<IdentityOptions>(options =>
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(RepositoryBase<,>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+//Bussiness services and repositories
+var services = typeof(PostRepository).Assembly.GetTypes()
+    .Where(x => x.GetInterfaces().Any(i => i.Name == typeof(IRepository<,>).Name)
+    && !x.IsAbstract && x.IsClass && !x.IsGenericType);
+
+foreach (var service in services)
+{
+    var allInterfaces = service.GetInterfaces();
+    var directInterface = allInterfaces.Except(allInterfaces.SelectMany(t => t.GetInterfaces())).FirstOrDefault();
+    if (directInterface != null)
+    {
+        builder.Services.Add(new ServiceDescriptor(directInterface, service, ServiceLifetime.Scoped));
+    }
+}
+
+//Config AutoMapper
+builder.Services.AddAutoMapper(typeof(PostInListDto));
 
 //Default Config for ASP.NET Core
 builder.Services.AddControllers();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.CustomOperationIds(apiDecs =>
+    {
+        return apiDecs.TryGetMethodInfo(out MethodInfo methodInfo) ? methodInfo.Name : null;
+    });
+
+    c.SwaggerDoc("AdminAPI", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Version = "v1",
+        Title = "API for Administrator",
+        Description = "API for CMS core Domain. This Domain keep track of compaigns, compaigns rules, and ..."
+    });
+
+    c.ParameterFilter<SwaggerNullableParameterFilter>();
+});
 
 var app = builder.Build();
 
@@ -55,7 +91,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("AdminAPI/swagger.json", "Admin API");
+        c.DisplayOperationId();
+        c.DisplayRequestDuration();
+    });
 }
 
 app.UseHttpsRedirection();
