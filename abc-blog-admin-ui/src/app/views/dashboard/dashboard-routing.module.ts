@@ -1,21 +1,21 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
 import { DashboardComponent } from './dashboard.component';
+import { AuthGuard } from '../../shared/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
     component: DashboardComponent,
     data: {
-      title: $localize`Dashboard`
-    }
-  }
+      title: `Dashboard`,
+      requiredPolicy: 'Permissions.Dashboard.View',
+    },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class DashboardRoutingModule {
-}
+export class DashboardRoutingModule {}

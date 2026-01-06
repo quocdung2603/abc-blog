@@ -4,6 +4,7 @@ import { PostComponent } from './posts/post.component';
 import { PostCategoryComponent } from './posts-categories/postCategory.component';
 import { SeriesComponent } from './series/series.component';
 import { RoyaltyComponent } from './royalties/royalty.component';
+import { AuthGuard } from '../../shared/auth.guard';
 
 const routes: Routes = [
   {
@@ -16,28 +17,27 @@ const routes: Routes = [
     component: PostComponent,
     data: {
       title: 'Posts',
+      requiredPolicy: 'Permissions.Posts.View',
     },
+    canActivate: [AuthGuard],
   },
   {
     path: 'post-categories',
     component: PostCategoryComponent,
     data: {
       title: 'Post Categories',
+      requiredPolicy: 'Permissions.PostCategories.View',
     },
+    canActivate: [AuthGuard],
   },
   {
     path: 'series',
     component: SeriesComponent,
     data: {
       title: 'Series',
+      requiredPolicy: 'Permissions.Series.View',
     },
-  },
-  {
-    path: 'post-categories',
-    component: PostCategoryComponent,
-    data: {
-      title: 'Post Categories',
-    },
+    canActivate: [AuthGuard],
   },
   {
     path: 'royalties',
@@ -45,6 +45,7 @@ const routes: Routes = [
     data: {
       title: 'Royalties',
     },
+    canActivate: [AuthGuard],
   },
 ];
 
