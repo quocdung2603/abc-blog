@@ -1,5 +1,8 @@
 using AbcBlog.Api;
+using AbcBlog.Api.Filters;
+using AbcBlog.Api.Services;
 using AbcBlog.Core;
+using AbcBlog.Core.ConfigOptions;
 using AbcBlog.Core.Domain.Identity;
 using AbcBlog.Core.Models.Content;
 using AbcBlog.Core.SeedWorks;
@@ -62,6 +65,13 @@ foreach (var service in services)
 
 //Config AutoMapper
 builder.Services.AddAutoMapper(typeof(PostInListDto));
+
+//Authen & Author
+builder.Services.Configure<JwtTokenSettings>(configuration.GetSection("JwtTokenSettings"));
+builder.Services.AddScoped<SignInManager<AppUser>, SignInManager<AppUser>>();
+builder.Services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
+builder.Services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 //Default Config for ASP.NET Core
 builder.Services.AddControllers();
