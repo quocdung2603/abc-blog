@@ -8,10 +8,13 @@ using AbcBlog.Core.Models.Content;
 using AbcBlog.Core.SeedWorks;
 using AbcBlog.Data.Repositories;
 using AbcBlog.Data.SeedWorks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
@@ -23,7 +26,7 @@ builder.Services.AddCors(o => o.AddPolicy(AbcCorsPolicy, builder =>
     builder.AllowAnyMethod()
     .AllowAnyHeader()
     .WithOrigins(configuration["AllowedOrigins"])
-    .AllowCredentials(); 
+    .AllowCredentials();
 }));
 
 //Config DB context and ASP.NET Core Identity
@@ -104,6 +107,24 @@ builder.Services.AddSwaggerGen(c =>
     c.ParameterFilter<SwaggerNullableParameterFilter>();
 });
 
+builder.Services.AddAuthentication(o =>
+{
+    o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(cfg =>
+{
+    cfg.RequireHttpsMetadata = false;
+    cfg.SaveToken = true;
+
+    cfg.TokenValidationParameters = new TokenValidationParameters
+
+    {
+        ValidIssuer = configuration["JwtTokenSettings:Issuer"],
+        ValidAudience = configuration["JwtTokenSettings:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtTokenSettings:Key"]))
+    };
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -121,6 +142,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors(AbcCorsPolicy);
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
