@@ -17,6 +17,15 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 var connectionString = configuration.GetConnectionString("DefaultConnection");
 
+var AbcCorsPolicy = "AbcCorsPolicy";
+builder.Services.AddCors(o => o.AddPolicy(AbcCorsPolicy, builder =>
+{
+    builder.AllowAnyMethod()
+    .AllowAnyHeader()
+    .WithOrigins(configuration["AllowedOrigins"])
+    .AllowCredentials(); 
+}));
+
 //Config DB context and ASP.NET Core Identity
 builder.Services.AddDbContext<AbcBlogContext>(options => options.UseSqlServer(connectionString));
 
@@ -108,6 +117,8 @@ if (app.Environment.IsDevelopment())
         c.DisplayRequestDuration();
     });
 }
+
+app.UseCors(AbcCorsPolicy);
 
 app.UseHttpsRedirection();
 
