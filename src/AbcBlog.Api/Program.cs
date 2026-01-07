@@ -1,4 +1,5 @@
 using AbcBlog.Api;
+using AbcBlog.Api.Authorization;
 using AbcBlog.Api.Filters;
 using AbcBlog.Api.Services;
 using AbcBlog.Core;
@@ -9,6 +10,7 @@ using AbcBlog.Core.SeedWorks;
 using AbcBlog.Data.Repositories;
 using AbcBlog.Data.SeedWorks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -21,6 +23,10 @@ var configuration = builder.Configuration;
 var connectionString = configuration.GetConnectionString("DefaultConnection");
 
 var AbcCorsPolicy = "AbcCorsPolicy";
+
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+builder.Services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+
 builder.Services.AddCors(o => o.AddPolicy(AbcCorsPolicy, builder =>
 {
     builder.AllowAnyMethod()

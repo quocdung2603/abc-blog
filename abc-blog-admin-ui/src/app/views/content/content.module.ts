@@ -17,8 +17,10 @@ import {
 import { IconModule } from '@coreui/icons-angular';
 import { ChartjsModule } from '@coreui/angular-chartjs';
 import { ContentRoutingModule } from './content-routing.module';
-
-
+import { PostComponent } from './posts/post.component';
+import { PostCategoryComponent } from './posts-categories/postCategory.component';
+import { SeriesComponent } from './series/series.component';
+import { RoyaltyComponent } from './royalties/royalty.component';
 
 @NgModule({
   imports: [
@@ -39,6 +41,11 @@ import { ContentRoutingModule } from './content-routing.module';
     AvatarModule,
     TableModule,
   ],
-  declarations: [],
+  declarations: [
+    PostComponent,
+    PostCategoryComponent,
+    SeriesComponent,
+    RoyaltyComponent,
+  ],
 })
 export class ContentModule {}

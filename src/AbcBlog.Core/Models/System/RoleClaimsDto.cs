@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AbcBlog.Core.Models.System
+﻿namespace AbcBlog.Core.Models.System
 {
     public class RoleClaimsDto
     {
         public required string Type { get; set; }
-        public required string Value { get; set;  }
+        public required string Value { get; set; }
         public string? DisplayName { get; set; }
         public bool Selected { get; set; }
     }
