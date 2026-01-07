@@ -8,8 +8,14 @@ import { Title } from '@angular/platform-browser';
 @Component({
   selector: 'app-root',
   template: `
-  <p-toast position="top-right" key="tr" />
-  <router-outlet></router-outlet>
+    <p-toast position="top-right" key="tr" />
+    <p-confirmDialog
+      header="Xác nhận"
+      acceptLabel="Có"
+      rejectLabel="Không"
+      icon="pi pi-exclamation-triangle"
+    />
+    <router-outlet />
   `,
 })
 export class AppComponent implements OnInit {

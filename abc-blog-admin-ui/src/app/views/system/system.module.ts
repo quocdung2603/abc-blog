@@ -13,6 +13,11 @@ import { SharedModule } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { RolesDetailComponent } from './roles/role-detail.component';
+import { MessageModule } from 'primeng/message';
+import { AbcSharedModule } from '../../shared/modules/abc-shared.module';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { PermissionGrantComponent } from './roles/permission-grant.component';
 
 @NgModule({
   imports: [
@@ -28,7 +33,15 @@ import { InputTextModule } from 'primeng/inputtext';
     ButtonModule,
     InputTextModule,
     SharedModule,
+    MessageModule,
+    AbcSharedModule,
+    KeyFilterModule,
   ],
-  declarations: [UserComponent, RoleComponent],
+  declarations: [
+    UserComponent,
+    RoleComponent,
+    RolesDetailComponent,
+    PermissionGrantComponent,
+  ],
 })
 export class SystemModule {}

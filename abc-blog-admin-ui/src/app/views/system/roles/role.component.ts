@@ -6,8 +6,11 @@ import {
   RoleDtoPageResult,
 } from '../../../api/admin-api.service.generated';
 import { AlertService } from '../../../shared/services/alert.service';
-import { DialogService } from 'primeng/dynamicdialog';
+import { DialogService, DynamicDialogComponent } from 'primeng/dynamicdialog';
 import { ConfirmationService } from 'primeng/api';
+import { RolesDetailComponent } from './role-detail.component';
+import { MessageConstants } from '../../../shared/constants/messages.constant';
+import { PermissionGrantComponent } from './permission-grant.component';
 
 @Component({
   selector: 'app-role',
@@ -78,11 +81,115 @@ export class RoleComponent implements OnInit, OnDestroy {
     this.loadData();
   }
 
-  deleteItems() {}
+  showAddModal() {
+    const ref = this.dialogService.open(RolesDetailComponent, {
+      header: 'Thêm mới quyền',
+      width: '70%',
+    });
 
-  showAddModal() {}
+    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+    const dynamicComponent = dialogRef?.instance as DynamicDialogComponent;
+    const ariaLabelledBy = dynamicComponent.getAriaLabelledBy();
+    dynamicComponent.getAriaLabelledBy = () => ariaLabelledBy;
+    ref.onClose.subscribe((data: any) => {
+      if (data) {
+        this.alertService.showSuccess(MessageConstants.CREATED_OK_MSG);
+        this.selectedItems = [];
+        this.loadData();
+      }
+    });
+  }
 
-  showEditModal() {}
+  showEditModal() {
+    if (this.selectedItems.length == 0) {
+      this.alertService.showError(MessageConstants.NOT_CHOOSE_ANY_RECORD);
+      return;
+    }
 
-  showPermissionModal(rowId: number, rowName: string) {}
+    var id = this.selectedItems[0].id;
+    const ref = this.dialogService.open(RolesDetailComponent, {
+      header: 'Cập nhật quyền',
+      width: '70%',
+      data: {
+        id: id,
+      },
+    });
+
+    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+    const dynamicComponent = dialogRef?.instance as DynamicDialogComponent;
+    const ariaLabelledBy = dynamicComponent.getAriaLabelledBy();
+    dynamicComponent.getAriaLabelledBy = () => ariaLabelledBy;
+
+    ref.onClose.subscribe((data: any) => {
+      if (data) {
+        this.alertService.showSuccess(MessageConstants.UPDATED_OK_MSG);
+        this.selectedItems = [];
+        this.loadData();
+      }
+    });
+  }
+
+  showPermissionModal(rowId: number, rowName: string) {
+    const ref = this.dialogService.open(PermissionGrantComponent, {
+      header: `Phân quyền - ${rowName}`,
+      width: '70%',
+      data: {
+        id: rowId,
+      },
+    });
+
+    const dialogRef = this.dialogService.dialogComponentRefMap.get(ref);
+    const dynamicComponent = dialogRef?.instance as DynamicDialogComponent;
+    const ariaLabelledBy = dynamicComponent.getAriaLabelledBy();
+    dynamicComponent.getAriaLabelledBy = () => ariaLabelledBy;
+
+    ref.onClose.subscribe((data: RoleDto) => {
+      if (data) {
+        this.alertService.showSuccess(MessageConstants.UPDATED_OK_MSG);
+        this.selectedItems = [];
+        this.loadData();
+      }
+    });
+  }
+
+  deleteItems() {
+    if (this.selectedItems.length == 0) {
+      this.alertService.showError(MessageConstants.NOT_CHOOSE_ANY_RECORD);
+      return;
+    }
+
+    var ids: any[] = [];
+    this.selectedItems.forEach((item) => {
+      ids.push(item.id);
+    });
+
+    this.confirmationService.confirm({
+      message: MessageConstants.CONFIRM_DELETE_MSG,
+      accept: () => {
+        this.deleteItemsConfirm(ids);
+      },
+    });
+  }
+
+  deleteItemsConfirm(ids: any[]) {
+    this.toggleBlockUI(true);
+
+    this.roleService
+      .deleteRoles(ids)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: () => {
+          this.alertService.showSuccess(MessageConstants.DELETED_OK_MSG);
+          this.selectedItems = [];
+          this.loadData();
+          this.toggleBlockUI(false);
+        },
+        error: (err: any) => {
+          this.alertService.showError(
+            'Đã có lỗi xảy ra khi xóa bản ghi. Vui lòng thử lại sau.'
+          );
+          this.toggleBlockUI(false);
+        },
+      });
+  }
 }
