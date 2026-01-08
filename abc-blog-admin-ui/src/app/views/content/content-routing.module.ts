@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PostComponent } from './posts/post.component';
-import { PostCategoryComponent } from './posts-categories/postCategory.component';
+import { PostCategoryComponent } from './posts-categories/post-category.component';
 import { SeriesComponent } from './series/series.component';
 import { RoyaltyComponent } from './royalties/royalty.component';
 import { AuthGuard } from '../../shared/auth.guard';

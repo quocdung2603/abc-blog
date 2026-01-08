@@ -1,49 +1,45 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-
-import {
-  AvatarModule,
-  ButtonGroupModule,
-  ButtonModule,
-  CardModule,
-  FormModule,
-  GridModule,
-  NavModule,
-  ProgressModule,
-  TableModule,
-  TabsModule,
-} from '@coreui/angular';
-import { IconModule } from '@coreui/icons-angular';
-import { ChartjsModule } from '@coreui/angular-chartjs';
+import { TableModule } from 'primeng/table';
+import { BadgeModule } from 'primeng/badge';
+import { BlockUIModule } from 'primeng/blockui';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { PanelModule } from 'primeng/panel';
+import { CheckboxModule } from 'primeng/checkbox';
 import { ContentRoutingModule } from './content-routing.module';
 import { PostComponent } from './posts/post.component';
-import { PostCategoryComponent } from './posts-categories/postCategory.component';
+import { PostCategoryComponent } from './posts-categories/post-category.component';
+import { PostCategoryDetailComponent } from './posts-categories/post-category-detail.component';
 import { SeriesComponent } from './series/series.component';
 import { RoyaltyComponent } from './royalties/royalty.component';
+import { PaginatorModule } from 'primeng/paginator';
+import { AbcSharedModule } from '../../shared/modules/abc-shared.module';
+import { KeyFilterModule } from 'primeng/keyfilter';
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   imports: [
     ContentRoutingModule,
-    CardModule,
-    NavModule,
-    IconModule,
-    TabsModule,
     CommonModule,
-    GridModule,
-    ProgressModule,
     ReactiveFormsModule,
-    ButtonModule,
-    FormModule,
-    ButtonModule,
-    ButtonGroupModule,
-    ChartjsModule,
-    AvatarModule,
     TableModule,
+    BadgeModule,
+    PaginatorModule,
+    BlockUIModule,
+    ProgressSpinnerModule,
+    PanelModule,
+    CheckboxModule,
+    AbcSharedModule,
+    KeyFilterModule,
+    InputTextModule,
+    ButtonModule,
   ],
   declarations: [
     PostComponent,
     PostCategoryComponent,
+    PostCategoryDetailComponent,
     SeriesComponent,
     RoyaltyComponent,
   ],
