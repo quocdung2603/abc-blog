@@ -39,7 +39,8 @@ builder.Services.AddCors(o => o.AddPolicy(AbcCorsPolicy, builder =>
 builder.Services.AddDbContext<AbcBlogContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddIdentity<AppUser, AppRole>(options => options.SignIn.RequireConfirmedAccount = false)
-    .AddEntityFrameworkStores<AbcBlogContext>();
+    .AddEntityFrameworkStores<AbcBlogContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {

@@ -48,6 +48,7 @@ import {
   AdminApiRoleApiClient,
   AdminApiTestApiClient,
   AdminApiTokenApiClient,
+  AdminApiUserApiClient,
 } from './api/admin-api.service.generated';
 import { environment } from '../environments/envitonment';
 
@@ -127,6 +128,7 @@ const APP_CONTAINERS = [
     AdminApiTestApiClient,
     AdminApiTokenApiClient,
     AdminApiRoleApiClient,
+    AdminApiUserApiClient,
     MessageService,
     AlertService,
     DialogService,
