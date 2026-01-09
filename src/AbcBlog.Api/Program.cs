@@ -92,6 +92,9 @@ builder.Services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
 builder.Services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
+//Media
+builder.Services.Configure<MediaSettings>(configuration.GetSection("MediaSettings"));
+
 //Default Config for ASP.NET Core
 builder.Services.AddControllers();
 
@@ -145,6 +148,8 @@ if (app.Environment.IsDevelopment())
         c.DisplayRequestDuration();
     });
 }
+
+app.UseStaticFiles();
 
 app.UseCors(AbcCorsPolicy);
 

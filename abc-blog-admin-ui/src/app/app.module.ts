@@ -39,14 +39,17 @@ import {
   TabsModule,
   UtilitiesModule,
 } from '@coreui/angular';
+
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { IconModule, IconSetService } from '@coreui/icons-angular';
 import {
   ADMIN_API_BASE_URL,
   AdminApiAuthApiClient,
+  AdminApiPostApiClient,
   AdminApiPostCategoryApiClient,
   AdminApiRoleApiClient,
+  AdminApiSeriesApiClient,
   AdminApiTestApiClient,
   AdminApiTokenApiClient,
   AdminApiUserApiClient,
@@ -63,6 +66,7 @@ import { TokenInterceptor } from './shared/interceptors/token.interceptor';
 import { GlobalHttpInterceptorService } from './shared/interceptors/error-handler.interceptor';
 import { DialogService, DynamicDialogModule } from 'primeng/dynamicdialog';
 import { UtilityService } from './shared/services/utility.service';
+import { UploadService } from './shared/services/upload.service';
 
 const APP_CONTAINERS = [
   DefaultFooterComponent,
@@ -131,6 +135,8 @@ const APP_CONTAINERS = [
     AdminApiRoleApiClient,
     AdminApiUserApiClient,
     AdminApiPostCategoryApiClient,
+    AdminApiSeriesApiClient,
+    AdminApiPostApiClient,
     MessageService,
     AlertService,
     DialogService,
@@ -138,6 +144,7 @@ const APP_CONTAINERS = [
     TokenStorageService,
     AuthGuard,
     UtilityService,
+    UploadService,
   ],
   bootstrap: [AppComponent],
 })

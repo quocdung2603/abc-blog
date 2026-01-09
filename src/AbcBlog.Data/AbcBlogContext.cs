@@ -1,5 +1,6 @@
 ﻿using AbcBlog.Core.Domain.Content;
 using AbcBlog.Core.Domain.Identity;
+using AbcBlog.Core.SeedWorks.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -32,6 +33,24 @@ namespace AbcBlog.Core
             builder.Entity<IdentityUserLogin<Guid>>().ToTable("AppUserLogins").HasKey(x => x.UserId);
             builder.Entity<IdentityUserRole<Guid>>().ToTable("AppUserRoles").HasKey(x => new { x.RoleId, x.UserId });
             builder.Entity<IdentityUserToken<Guid>>().ToTable("AppUserTokens").HasKey(x => new { x.UserId });
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker
+               .Entries()
+               .Where(e => e.State == EntityState.Added);
+
+            foreach (var entityEntry in entries)
+            {
+                var dateCreatedProp = entityEntry.Entity.GetType().GetProperty(SystemConsts.DateCreatedField);
+                if (entityEntry.State == EntityState.Added
+                    && dateCreatedProp != null)
+                {
+                    dateCreatedProp.SetValue(entityEntry.Entity, DateTime.Now);
+                }
+            }
+            return base.SaveChangesAsync(cancellationToken);
         }
     }
 }

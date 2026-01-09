@@ -16,4 +16,8 @@
     <ProjectReference Include="..\AbcBlog.Data\AbcBlog.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

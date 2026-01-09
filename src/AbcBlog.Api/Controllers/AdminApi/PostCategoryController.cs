@@ -96,7 +96,7 @@ namespace AbcBlog.Api.Controllers.AdminApi
         public async Task<ActionResult<List<PostCategoryDto>>> GetPostCategories()
         {
             var query = await _unitOfWork.PostCategories.GetAllAsync();
-            var model = _mapper.Map<PostCategoryDto>(query);
+            var model = _mapper.Map<List<PostCategoryDto>>(query);
             return Ok(model);
         }
     }

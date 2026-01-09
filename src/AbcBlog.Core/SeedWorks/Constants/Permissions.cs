@@ -61,6 +61,9 @@ namespace AbcBlog.Core.SeedWorks.Constants
             public const string Edit = "Permissions.Posts.Edit";
             [Description("Xóa Bài Viết")]
             public const string Delete = "Permission.Posts.Delete";
+            [Description("Duyệt Bài Viết")]
+            public const string Approve = "Permission.Posts.Approve";
+
         }
 
         public static class Series

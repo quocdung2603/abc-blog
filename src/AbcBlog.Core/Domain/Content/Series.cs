@@ -13,7 +13,7 @@ namespace AbcBlog.Core.Domain.Content
 
         [Required]
         [MaxLength(250)]
-        public required string name { get; set; }
+        public required string Name { get; set; }
 
         [MaxLength(250)]
         public string? Description { get; set; }
