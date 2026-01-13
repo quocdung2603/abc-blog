@@ -77,5 +77,13 @@ namespace AbcBlog.Core.SeedWorks.Constants
             [Description("Xóa Loạt Bài")]
             public const string Delete = "Permission.Series.Delete";
         }
+
+        public static class Royalty
+        {
+            [Description("Xem nhuận bút")]
+            public const string View = "Permissions.Royalty.View";
+            [Description("Thanh toán nhuận bút")]
+            public const string Pay = "Permissions.Royalty.Pay";
+        }
     }
 }

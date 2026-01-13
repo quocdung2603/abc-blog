@@ -9,6 +9,7 @@ namespace AbcBlog.Core.SeedWorks
         IPostCategoryRepository PostCategories { get; }
 
         ISeriesRepository Series { get; }
+        ITransactionRepository Transactions { get; }
         Task<int> CompleteAsync();
     }
 }

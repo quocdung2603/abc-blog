@@ -14,7 +14,6 @@ import { PostComponent } from './posts/post.component';
 import { PostCategoryComponent } from './posts-categories/post-category.component';
 import { PostCategoryDetailComponent } from './posts-categories/post-category-detail.component';
 import { SeriesComponent } from './series/series.component';
-import { RoyaltyComponent } from './royalties/royalty.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { AbcSharedModule } from '../../shared/modules/abc-shared.module';
 import { KeyFilterModule } from 'primeng/keyfilter';
@@ -32,7 +31,7 @@ import { EditorModule } from 'primeng/editor';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
-import {InputTextareaModule } from 'primeng/inputtextarea'
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 @NgModule({
   imports: [
@@ -58,7 +57,7 @@ import {InputTextareaModule } from 'primeng/inputtextarea'
     InputNumberModule,
     ImageModule,
     AutoCompleteModule,
-    DynamicDialogModule
+    DynamicDialogModule,
   ],
   declarations: [
     PostComponent,
@@ -71,7 +70,6 @@ import {InputTextareaModule } from 'primeng/inputtextarea'
     PostSeriesComponent,
     SeriesPostsComponent,
     PostActivityLogsComponent,
-    RoyaltyComponent,
   ],
 })
 export class ContentModule {}

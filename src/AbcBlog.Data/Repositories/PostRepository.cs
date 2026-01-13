@@ -65,6 +65,11 @@ namespace AbcBlog.Data.Repositories
             return await _mapper.ProjectTo<SeriesInListDto>(query).ToListAsync();
         }
 
+        public async Task<List<Post>> GetListUnpaidPublishPosts(Guid userId)
+        {
+            return await _context.Posts.Where(x => x.AuthorUserId == userId && x.IsPaid == false && x.Status == PostStatus.Published).ToListAsync();
+        }
+
         public async Task<PageResult<PostInListDto>> GetPostsPagingAsync(string? keyword, Guid currentUserId, Guid? categoryId, int pageIndex = 1, int pageSize = 10)
         {
             var user = await _userManager.FindByIdAsync(currentUserId.ToString());

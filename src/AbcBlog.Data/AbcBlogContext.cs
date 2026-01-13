@@ -1,14 +1,10 @@
 ﻿using AbcBlog.Core.Domain.Content;
 using AbcBlog.Core.Domain.Identity;
+using AbcBlog.Core.Domain.Royalty;
 using AbcBlog.Core.SeedWorks.Constants;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AbcBlog.Core
 {
@@ -25,6 +21,7 @@ namespace AbcBlog.Core
         public DbSet<PostActivityLog> PostActivityLogs { get; set; }
         public DbSet<Series> Series { get; set; }
         public DbSet<PostInSeries> PostInSeries { get; set; }
+        public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

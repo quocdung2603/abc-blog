@@ -5,12 +5,10 @@ using AbcBlog.Core.Models;
 using AbcBlog.Core.Models.Content;
 using AbcBlog.Core.SeedWorks;
 using AbcBlog.Core.SeedWorks.Constants;
-using AbcBlog.Data.SeedWorks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using static AbcBlog.Core.SeedWorks.Constants.Permissions;
 
 namespace AbcBlog.Api.Controllers.AdminApi
 {
@@ -22,7 +20,7 @@ namespace AbcBlog.Api.Controllers.AdminApi
         private readonly UserManager<AppUser> _userManager;
         private IMapper _mapper;
 
-        public PostController(IUnitOfWork uniOfWork, IMapper mapper, UserManager<AppUser> userManager) 
+        public PostController(IUnitOfWork uniOfWork, IMapper mapper, UserManager<AppUser> userManager)
         {
             _unitOfWork = uniOfWork;
             _mapper = mapper;

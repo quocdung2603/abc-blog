@@ -7,8 +7,10 @@ using AbcBlog.Core.ConfigOptions;
 using AbcBlog.Core.Domain.Identity;
 using AbcBlog.Core.Models.Content;
 using AbcBlog.Core.SeedWorks;
+using AbcBlog.Core.Services;
 using AbcBlog.Data.Repositories;
 using AbcBlog.Data.SeedWorks;
+using AbcBlog.Data.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -91,6 +93,9 @@ builder.Services.AddScoped<SignInManager<AppUser>, SignInManager<AppUser>>();
 builder.Services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
 builder.Services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+
+builder.Services.AddScoped<IRoyaltyService, RoyaltyService>();
+
 
 //Media
 builder.Services.Configure<MediaSettings>(configuration.GetSection("MediaSettings"));
