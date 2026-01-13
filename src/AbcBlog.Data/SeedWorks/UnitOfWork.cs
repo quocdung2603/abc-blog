@@ -19,6 +19,7 @@ namespace AbcBlog.Data.SeedWorks
             PostCategories = new PostCategoryRepository(context, mapper);
             Series = new SeriesRepository(context, mapper);
             Transactions = new TransactionRepository(context, mapper);
+            Users = new UserRepository(context);
 
         }
 
@@ -26,6 +27,7 @@ namespace AbcBlog.Data.SeedWorks
         public IPostCategoryRepository PostCategories { get; private set; }
         public ISeriesRepository Series { get; private set; }
         public ITransactionRepository Transactions { get; set; }
+        public IUserRepository Users { get; private set; }
 
         public async Task<int> CompleteAsync()
         {

@@ -48,7 +48,7 @@ export class SeriesComponent implements OnInit, OnDestroy {
     this.loadData();
   }
 
-  loadData(selectionId = null) {
+  loadData(selectionId?: string) {
     this.toggleBlockUI(true);
 
     this.seriesApiClient

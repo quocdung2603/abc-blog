@@ -64,6 +64,11 @@ namespace AbcBlog.Api.Controllers.AdminApi
                     return NotFound();
                 }
 
+                if (await _unitOfWork.Series.HasPost(id))
+                {
+                    return BadRequest("Loạt bài đang chứa bài viết, không thể xóa");
+                }
+
                 _unitOfWork.Series.Remove(series);
             }
 

@@ -62,6 +62,11 @@ namespace AbcBlog.Api.Controllers.AdminApi
                 {
                     return NotFound();
                 }
+
+                if (await _unitOfWork.PostCategories.HasPost(id))
+                {
+                    return BadRequest("Danh mục hiện đang có bài viết, không thể xóa");
+                }
                 _unitOfWork.PostCategories.Remove(postCategory);
             }
 
