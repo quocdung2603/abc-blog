@@ -62,8 +62,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     //user settings 
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
     options.User.RequireUniqueEmail = true;
-}
-);
+});
 
 // Add services to the container.
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(RepositoryBase<,>));
@@ -89,6 +88,8 @@ builder.Services.AddAutoMapper(typeof(PostInListDto));
 
 //Authen & Author
 builder.Services.Configure<JwtTokenSettings>(configuration.GetSection("JwtTokenSettings"));
+
+//Method & Token
 builder.Services.AddScoped<SignInManager<AppUser>, SignInManager<AppUser>>();
 builder.Services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
 builder.Services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
@@ -99,6 +100,8 @@ builder.Services.AddScoped<IRoyaltyService, RoyaltyService>();
 
 //Media
 builder.Services.Configure<MediaSettings>(configuration.GetSection("MediaSettings"));
+
+
 
 //Default Config for ASP.NET Core
 builder.Services.AddControllers();
