@@ -1,0 +1,44 @@
+﻿using AbcBlog.Core.SeedWorks;
+using AbcBlog.WebApp.Models;
+using Microsoft.AspNetCore.Mvc;
+
+namespace AbcBlog.WebApp.Controllers
+{
+    public class PostController : Controller
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        public PostController(IUnitOfWork unitOfWork) {
+            _unitOfWork = unitOfWork;
+        }
+
+        [Route("posts")]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [Route("posts/{categorySlug}")]
+        public async Task<IActionResult> ListByCategory([FromRoute] string categorySlug, [FromQuery] int page = 1)
+        {
+            var post = await _unitOfWork.Posts.GetPostsByCategoryPagingAsync(categorySlug, page, 1);
+            var category = await _unitOfWork.PostCategories.GetBySlug(categorySlug);
+            return View(new PostListByCategoryViewModel() {
+                Category = category,
+                Posts = post
+                
+            });
+        }
+
+        [Route("tag/{tagSlug}")]
+        public IActionResult ListByTag([FromRoute] string tagSlug, [FromQuery] int? page = 1)
+        {
+            return View();
+        }
+
+        [Route("post/{slug}")]
+        public IActionResult Details([FromRoute] string slug)
+        {
+            return View();
+        }
+    }
+}

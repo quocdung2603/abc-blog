@@ -76,6 +76,29 @@ namespace AbcBlog.Data.Repositories
             return await _context.Posts.Where(x => x.AuthorUserId == userId && x.IsPaid == false && x.Status == PostStatus.Published).ToListAsync();
         }
 
+        public async Task<PageResult<PostInListDto>> GetPostsByCategoryPagingAsync(string? categorySlug, int pageIndex = 1, int pageSize = 10)
+        {
+            var query = _context.Posts.AsQueryable();
+            if (!string.IsNullOrEmpty(categorySlug))
+            {
+                query = query.Where(x => x.CategorySlug == categorySlug);
+            }
+
+            var totalRow = await query.CountAsync();
+
+            query = query.OrderByDescending(x => x.DateCreated)
+               .Skip((pageIndex - 1) * pageSize)
+               .Take(pageSize);
+
+            return new PageResult<PostInListDto>
+            {
+                Results = await _mapper.ProjectTo<PostInListDto>(query).ToListAsync(),
+                CurrentPage = pageIndex,
+                RowCount = totalRow,
+                PageSize = pageSize
+            };
+        }
+
         public async Task<PageResult<PostInListDto>> GetPostsPagingAsync(string? keyword, Guid currentUserId, Guid? categoryId, int pageIndex = 1, int pageSize = 10)
         {
             var user = await _userManager.FindByIdAsync(currentUserId.ToString());

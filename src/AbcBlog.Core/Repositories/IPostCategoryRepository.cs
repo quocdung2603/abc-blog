@@ -9,5 +9,6 @@ namespace AbcBlog.Core.Repositories
     {
         Task<PageResult<PostCategoryDto>> GetPostCategoryPagingAsync(string? keyword, int pageIndex = 1, int pageSize = 10);
         Task<bool> HasPost(Guid categoryId);
+        Task<PostCategoryDto> GetBySlug(string Slug);
     }
 }

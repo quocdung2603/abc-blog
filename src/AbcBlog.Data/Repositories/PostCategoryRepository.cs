@@ -6,6 +6,7 @@ using AbcBlog.Core.Repositories;
 using AbcBlog.Data.SeedWorks;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace AbcBlog.Data.Repositories
 {
@@ -16,6 +17,16 @@ namespace AbcBlog.Data.Repositories
         public PostCategoryRepository(AbcBlogContext context, IMapper mapper) : base(context)
         {
             _mapper = mapper;
+        }
+
+        public async Task<PostCategoryDto> GetBySlug(string Slug)
+        {
+            var category = await _context.PostCategories.FirstOrDefaultAsync(x => x.Slug == Slug);
+            if (category == null)
+            {
+                throw new Exception($"Cannot find {Slug}");
+            }
+            return _mapper.Map<PostCategoryDto>(category);
         }
 
         public async Task<PageResult<PostCategoryDto>> GetPostCategoryPagingAsync(string? keyword, int pageIndex = 1, int pageSize = 10)
