@@ -11,11 +11,13 @@ import { UtilityService } from '../../../shared/services/utility.service';
 import {
   AdminApiPostApiClient,
   AdminApiPostCategoryApiClient,
+  AdminApiTagApiClient,
   PostCategoryDto,
   PostDto,
+  TagDto,
 } from '../../../api/admin-api.service.generated';
 import { UploadService } from '../../../shared/services/upload.service';
-import { environment } from '../../../../environments/envitonment';
+import { environment } from '../../../../environments/environment';
 @Component({
   templateUrl: 'post-detail.component.html',
 })
@@ -35,6 +37,8 @@ export class PostDetailComponent implements OnInit, OnDestroy {
   selectedEntity = {} as PostDto;
   public thumbnailImage!: any;
 
+  tagOptions: any[] = [];
+
   formSavedEventEmitter: EventEmitter<any> = new EventEmitter();
 
   constructor(
@@ -44,7 +48,8 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private postApiClient: AdminApiPostApiClient,
     private postCategoryApiClient: AdminApiPostCategoryApiClient,
-    private uploadService: UploadService
+    private uploadService: UploadService,
+    private tagApiClient: AdminApiTagApiClient,
   ) {}
   ngOnDestroy(): void {
     if (this.ref) {
@@ -75,10 +80,11 @@ export class PostDetailComponent implements OnInit, OnDestroy {
     this.buildForm();
     //Load data to form
     var categories = this.postCategoryApiClient.getPostCategories();
-
+    var tags = this.tagApiClient.getAllTags();
     this.toggleBlockUI(true);
     forkJoin({
       categories,
+      tags,
     })
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe({
@@ -88,6 +94,13 @@ export class PostDetailComponent implements OnInit, OnDestroy {
           categories.forEach((element) => {
             this.postCategories.push({
               value: element.id,
+              label: element.name,
+            });
+          });
+          var tags = repsonse.tags as TagDto[];
+          tags.forEach((element) => {
+            this.tagOptions.push({
+              value: element.name,
               label: element.name,
             });
           });
@@ -186,22 +199,22 @@ export class PostDetailComponent implements OnInit, OnDestroy {
           Validators.required,
           Validators.maxLength(255),
           Validators.minLength(3),
-        ])
+        ]),
       ),
       slug: new FormControl(
         this.selectedEntity.slug || null,
-        Validators.required
+        Validators.required,
       ),
       categoryId: new FormControl(
         this.selectedEntity.categoryId || null,
-        Validators.required
+        Validators.required,
       ),
       description: new FormControl(
         this.selectedEntity.description || null,
-        Validators.required
+        Validators.required,
       ),
       seoDescription: new FormControl(
-        this.selectedEntity.seoDescription || null
+        this.selectedEntity.seoDescription || null,
       ),
       tags: new FormControl(this.selectedEntity.tags || null),
       content: new FormControl(this.selectedEntity.content || null),

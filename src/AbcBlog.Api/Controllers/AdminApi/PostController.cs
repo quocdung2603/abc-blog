@@ -1,6 +1,7 @@
 ﻿using AbcBlog.Api.Extensions;
 using AbcBlog.Core.Domain.Content;
 using AbcBlog.Core.Domain.Identity;
+using AbcBlog.Core.Helpers;
 using AbcBlog.Core.Models;
 using AbcBlog.Core.Models.Content;
 using AbcBlog.Core.SeedWorks;
@@ -37,6 +38,8 @@ namespace AbcBlog.Api.Controllers.AdminApi
             }
             var post = _mapper.Map<CreateUpdatePostRequest, Post>(request);
             var category = await _unitOfWork.PostCategories.GetByIdAsync(post.CategoryId);
+            var postId = Guid.NewGuid();
+            post.Id = postId;
             post.CategoryName = category.Name;
             post.CategorySlug = category.Slug;
 
@@ -47,6 +50,18 @@ namespace AbcBlog.Api.Controllers.AdminApi
             post.AuthorName = user.GetFullName();
 
             _unitOfWork.Posts.Add(post);
+
+            if (request.Tags != null && request.Tags.Length > 0)
+            {
+                post.Tags = request.Tags;
+                foreach (var tagName in request.Tags)
+                {
+                    var tagSlug = TextHelper.ToUnsignedString(tagName);
+                    var tag = await _unitOfWork.Tags.GetBySlug(tagSlug);
+
+                    await _unitOfWork.Tags.AddTagToPost(post.Id, tag.Id);
+                }
+            }
 
             var result = await _unitOfWork.CompleteAsync();
             return result > 0 ? Ok() : BadRequest();
@@ -72,6 +87,26 @@ namespace AbcBlog.Api.Controllers.AdminApi
                 post.CategoryName = category.Name;
                 post.CategorySlug = category.Slug;
             }
+
+            if (request.Tags != null && request.Tags.Length > 0)
+            {
+                post.Tags = request.Tags;
+                foreach (var tagName in request.Tags)
+                {
+                    var tagSlug = TextHelper.ToUnsignedString(tagName);
+                    var tag = await _unitOfWork.Tags.GetBySlug(tagSlug);
+                    if(tag != null)
+                    {
+                        var isTaginPost = await _unitOfWork.Tags.IsTagInPost(tag.Id, post.Id);
+                        if (!isTaginPost)
+                        {
+                            await _unitOfWork.Tags.AddTagToPost(post.Id, tag.Id);
+                        }
+                    }
+                    
+                }
+            }
+
             _mapper.Map(request, post);
             await _unitOfWork.CompleteAsync();
 
@@ -172,6 +207,5 @@ namespace AbcBlog.Api.Controllers.AdminApi
             var logs = await _unitOfWork.Posts.GetActivityLogs(id);
             return Ok(logs);
         }
-
     }
 }

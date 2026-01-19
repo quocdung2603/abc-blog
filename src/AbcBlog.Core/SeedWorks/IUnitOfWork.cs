@@ -11,6 +11,7 @@ namespace AbcBlog.Core.SeedWorks
         ISeriesRepository Series { get; }
         ITransactionRepository Transactions { get; }
         IUserRepository Users { get; }
+        ITagRepository Tags { get; }
         Task<int> CompleteAsync();
     }
 }

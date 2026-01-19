@@ -26,6 +26,13 @@ export const navItems: INavData[] = [
         },
       },
       {
+        name: 'Tags',
+        url: '/content/tags',
+        attributes: {
+          policyName: 'Permissions.Tags.View',
+        },
+      },
+      {
         name: 'Bài viết',
         url: '/content/posts',
         attributes: {

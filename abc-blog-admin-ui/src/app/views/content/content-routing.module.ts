@@ -4,6 +4,7 @@ import { PostComponent } from './posts/post.component';
 import { PostCategoryComponent } from './posts-categories/post-category.component';
 import { SeriesComponent } from './series/series.component';
 import { AuthGuard } from '../../shared/auth.guard';
+import { TagComponent } from './tags/tag.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,15 @@ const routes: Routes = [
     data: {
       title: 'Post Categories',
       requiredPolicy: 'Permissions.PostCategories.View',
+    },
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'tags',
+    component: TagComponent,
+    data: {
+      title: 'Tags',
+      requiredPolicy: 'Permissions.Tags.View',
     },
     canActivate: [AuthGuard],
   },

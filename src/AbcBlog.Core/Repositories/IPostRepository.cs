@@ -19,5 +19,7 @@ namespace AbcBlog.Core.Repositories
         Task<List<Post>> GetListUnpaidPublishPosts(Guid userId);
         Task<List<PostInListDto>> GetLastestPost(int top);
         Task<PageResult<PostInListDto>> GetPostsByCategoryPagingAsync(string? categorySlug, int pageIndex = 1, int pageSize = 10);
+        Task<PostDto> GetPostBySlug(string slug);
+        Task<PageResult<PostInListDto>> GetPostByTagPagingAsync(string tagSlug, int pageIndex = 1, int pageSize = 10);
     }
 }

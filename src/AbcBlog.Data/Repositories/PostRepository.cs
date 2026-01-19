@@ -76,6 +76,36 @@ namespace AbcBlog.Data.Repositories
             return await _context.Posts.Where(x => x.AuthorUserId == userId && x.IsPaid == false && x.Status == PostStatus.Published).ToListAsync();
         }
 
+        public async Task<PostDto> GetPostBySlug(string slug)
+        {
+            var post = await _context.Posts.FirstOrDefaultAsync(x => x.Slug == slug);
+            if (post == null) throw new Exception($"Cannot find post with Slug: {slug}");
+            return _mapper.Map<PostDto>(post);
+        }
+
+        public async Task<PageResult<PostInListDto>> GetPostByTagPagingAsync(string tagSlug, int pageIndex = 1, int pageSize = 10)
+        {
+            var query = from p in _context.Posts
+                        join pt in _context.PostTags on p.Id equals pt.PostId
+                        join t in _context.Tags on pt.TagId equals t.Id
+                        where t.Slug == tagSlug
+                        select p;
+
+            var totalRow = await query.CountAsync();
+
+            query = query.OrderByDescending(x => x.DateCreated)
+               .Skip((pageIndex - 1) * pageSize)
+               .Take(pageSize);
+
+            return new PageResult<PostInListDto>
+            {
+                Results = await _mapper.ProjectTo<PostInListDto>(query).ToListAsync(),
+                CurrentPage = pageIndex,
+                RowCount = totalRow,
+                PageSize = pageSize
+            };
+        }
+
         public async Task<PageResult<PostInListDto>> GetPostsByCategoryPagingAsync(string? categorySlug, int pageIndex = 1, int pageSize = 10)
         {
             var query = _context.Posts.AsQueryable();

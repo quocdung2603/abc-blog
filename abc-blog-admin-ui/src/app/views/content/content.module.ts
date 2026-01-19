@@ -32,6 +32,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { TagComponent } from './tags/tag.component';
+import { TagDetailComponent } from './tags/tag-detail.component';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   imports: [
@@ -58,6 +61,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     ImageModule,
     AutoCompleteModule,
     DynamicDialogModule,
+    MultiSelectModule,  
   ],
   declarations: [
     PostComponent,
@@ -70,6 +74,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     PostSeriesComponent,
     SeriesPostsComponent,
     PostActivityLogsComponent,
+    TagComponent,
+    TagDetailComponent,
   ],
 })
 export class ContentModule {}

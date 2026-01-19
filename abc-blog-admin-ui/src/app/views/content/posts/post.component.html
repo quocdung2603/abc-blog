@@ -82,6 +82,7 @@
             </th>
             <th>Tiêu đề</th>
             <th>Danh mục</th>
+            <th>Tag</th>
             <th>Lượt xem</th>
             <th>Ngày tạo</th>
              <th>Nhuận bút</th>
@@ -95,8 +96,9 @@
               <span class="ui-column-title"></span>
               <p-tableCheckbox [value]="row"></p-tableCheckbox>
             </td>
-            <td>{{ row.name }}</td>
+            <td style="max-width: 150px;">{{ row.name }}</td>
             <td>{{ row.categoryName }}</td>
+            <td>{{ row.postTags }}</td>
             <td>{{ row.viewCount | number }}</td>
             <td>{{ row.dateCreated | date : "dd-MM-yyyy hh:mm" }}</td>
             <td>

@@ -14,7 +14,7 @@ import {
   SeriesDto,
 } from '../../../api/admin-api.service.generated';
 import { UploadService } from '../../../shared/services/upload.service';
-import { environment } from '../../../../environments/envitonment';
+import { environment } from '../../../../environments/environment';
 @Component({
   templateUrl: 'series-detail.component.html',
 })

@@ -78,6 +78,18 @@ namespace AbcBlog.Core.SeedWorks.Constants
             public const string Delete = "Permission.Series.Delete";
         }
 
+        public static class Tags
+        {
+            [Description("Xem Tags")]
+            public const string View = "Permissions.Tags.View";
+            [Description("Tạo Tags")]
+            public const string Create = "Permissions.Tags.Create";
+            [Description("Sửa Tags")]
+            public const string Edit = "Permissions.Tags.Edit";
+            [Description("Xóa Tags")]
+            public const string Delete = "Permission.Tags.Delete";
+        }
+
         public static class Royalty
         {
             [Description("Xem nhuận bút")]
