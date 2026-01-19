@@ -11,7 +11,9 @@ namespace AbcBlog.Core.Repositories
         Task AddPostToSeries(Guid seriesId, Guid postId, int sortOrder);
         Task RemovePostToSeries(Guid seriesId, Guid postId);
         Task<List<PostInListDto>> GetAllPostsInSeries(Guid seriesId);
+        Task<PageResult<PostInListDto>> GetAllPostsInSeries(string Slug, int pageIndex = 1, int pageSize = 10);
         Task<bool> IsPostInSeries(Guid seriesId, Guid postId);
         Task<bool> HasPost(Guid seriesId);
+        Task<SeriesDto> GetSeriesBySlug(string slug);
     }
 }

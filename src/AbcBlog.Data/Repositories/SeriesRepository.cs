@@ -43,6 +43,41 @@ namespace AbcBlog.Data.Repositories
             return await _mapper.ProjectTo<PostInListDto>(query).ToListAsync();
         }
 
+        public async Task<PageResult<PostInListDto>> GetAllPostsInSeries(string Slug, int pageIndex = 1, int pageSize = 10)
+        {
+            var query = from pis in _context.PostInSeries
+                        join p in _context.Posts
+                        on pis.PostId equals p.Id
+                        join s in _context.Series on pis.SeriesId equals s.Id
+                        where s.Slug == Slug
+                        select p;
+
+            var totalRow = await query.CountAsync();
+
+            query = query.OrderByDescending(x => x.DateCreated)
+               .Skip((pageIndex - 1) * pageSize)
+               .Take(pageSize);
+
+            return new PageResult<PostInListDto>
+            {
+                Results = await _mapper.ProjectTo<PostInListDto>(query).ToListAsync(),
+                CurrentPage = pageIndex,
+                RowCount = totalRow,
+                PageSize = pageSize
+            };
+
+        }
+
+        public async Task<SeriesDto> GetSeriesBySlug(string slug)
+        {
+            var series = await _context.Series.FirstOrDefaultAsync(x => x.Slug == slug);
+            if (series == null)
+            {
+                throw new Exception($"Cannot find post with Slug: {slug}");
+            }
+            return _mapper.Map<SeriesDto>(series);
+        }
+
         public async Task<PageResult<SeriesInListDto>> GetSeriesPagingAsync(string? keyword, int pageIndex = 1, int pageSize = 10)
         {
             var query = _context.Series.AsQueryable();
@@ -68,7 +103,7 @@ namespace AbcBlog.Data.Repositories
 
         public async Task<bool> HasPost(Guid seriesId)
         {
-            return await _context.PostInSeries.AnyAsync(x=> x.SeriesId == seriesId);
+            return await _context.PostInSeries.AnyAsync(x => x.SeriesId == seriesId);
         }
 
         public async Task<bool> IsPostInSeries(Guid seriesId, Guid postId)
