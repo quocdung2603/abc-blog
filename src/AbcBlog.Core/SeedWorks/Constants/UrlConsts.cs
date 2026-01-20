@@ -11,12 +11,14 @@
         public static string PostsByTagSlug = "/tag/{0}";
         public static string Login = "/login";
         public static string Register = "/register";
+        public static string ForgotPassword = "/forgot-password";
+        public static string ResetPassword = "/reset-password";
         public static string Profile = "/profile";
         public static string ChangeProfile = "/profile/edit";
         public static string Author = "/author/{0}";
         public static string Series = "/series";
         public static string SeriesDetail = "/series/{0}";
 
-        public static string ChangePassword = "/change-password";
+        public static string ChangePassword = "/profile/change-password";
     }
 }

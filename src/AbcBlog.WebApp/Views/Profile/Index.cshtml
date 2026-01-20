@@ -21,6 +21,10 @@
 <div class="container px-4 px-lg-5">
     <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
+            @if (TempData[SystemConsts.FormSuccessMsg] != null)
+            {
+                <div class="alert alert-success">@TempData[SystemConsts.FormSuccessMsg]</div>
+            }
             <table class="table table-borderless">
                 <thead>
                     <tr>
@@ -33,8 +37,10 @@
                     </tr>
                     <tr>
                         <td>
-                            <a class="btn btn-primary" href="@UrlConsts.ChangeProfile">Edit</a>
-
+                            <a class="btn btn-primary" href="@UrlConsts.ChangeProfile">Update Profile</a>
+                        </td>
+                        <td>
+                            <a class="btn btn-danger" href="@UrlConsts.ChangePassword">Change Password</a>
                         </td>
                     </tr>
                 </thead>

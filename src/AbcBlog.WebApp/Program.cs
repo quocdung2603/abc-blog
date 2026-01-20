@@ -7,6 +7,7 @@ using AbcBlog.Core.SeedWorks;
 using AbcBlog.Data.Repositories;
 using AbcBlog.Data.SeedWorks;
 using AbcBlog.WebApp.Helper;
+using AbcBlog.WebApp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +23,7 @@ builder.Services.AddControllersWithViews();
 
 //custom setup
 builder.Services.Configure<SystemConfig>(configuration.GetSection("SystemConfig"));
+builder.Services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
 
 builder.Services.AddDbContext<AbcBlogContext>(options => options.UseSqlServer(connectionString));
 
@@ -62,6 +64,7 @@ builder.Services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPri
 // Add services to the container.
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(RepositoryBase<,>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 
 //Bussiness services and repositories
 var services = typeof(PostRepository).Assembly.GetTypes()
