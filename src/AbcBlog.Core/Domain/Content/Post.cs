@@ -35,7 +35,7 @@ namespace AbcBlog.Core.Domain.Content
         public string? Source { get; set; }
 
         [MaxLength(250)]
-        public string?[] Tags { get; set; }
+        public string[]? Tags { get; set; }
 
         [MaxLength(160)]
         public string? SeoDescription { get; set; }

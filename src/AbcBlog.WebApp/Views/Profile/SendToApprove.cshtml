@@ -1,0 +1,59 @@
+﻿@{
+    ViewData["Title"] = "Sent Post To Approve";
+    ViewData["Description"] = "Sent Post To Approve";
+
+}
+@model SendToApprove
+<!-- Page Header-->
+<header class="masthead" style="background-image: url('/assets/img/home-bg.jpg')">
+    <div class="container position-relative px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="site-heading">
+                    <h1>Sent Post To Approve</h1>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- Main Content-->
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            @if (TempData[SystemConsts.FormSuccessMsg] != null)
+            {
+                <div class="alert alert-success">@TempData[SystemConsts.FormSuccessMsg]</div>
+            }
+            <table class="table table-borderless">
+                <thead>
+                    <tr>
+                        <td>Name</td>
+                        <td>@Model.Post.Name</td>
+                    </tr>
+                    <tr>
+                        <td>Description</td>
+                        <td>@Model.Post.Description</td>
+                    </tr>
+                    <tr>
+                        <td>Date Created</td>
+                        <td>@Model.Post.DateCreated.ToLongDateString()</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <form id="sendToApprove" class="form-inline" asp-controller="Profile" method="post" asp-action="ConfirmSendToApprove">
+                                <input asp-for="@Model.Post.Slug" name="slug" class="form-control" id="slug" hidden />
+                                <button class="btn btn-danger btn-sm" title="Confirm Send To Approve" type="submit">Confirm Send To Approve</button>
+                            </form>
+                            @* <a href="@string.Format(UrlConsts.ConfirmSendApprovalPost, Model.Post.Slug)">Confirm Send To Approve </a> *@
+                        </td>
+                        <td>
+                            <a href="@UrlConsts.PostListByUser">Back to list</a>
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+
+        </div>
+    </div>
+</div>

@@ -9,6 +9,7 @@ using AbcBlog.Data.SeedWorks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using static AbcBlog.Core.SeedWorks.Constants.Permissions;
 
 namespace AbcBlog.Data.Repositories
 {
@@ -129,6 +130,30 @@ namespace AbcBlog.Data.Repositories
             };
         }
 
+        public async Task<PageResult<PostInListDto>> GetPostsByUserPagingAsync(string? keyword, Guid currentUserId, int pageIndex = 1, int pageSize = 10)
+        {
+            var query = _context.Posts.Where(x => x.AuthorUserId == currentUserId)
+              .AsQueryable();
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                query = query.Where(x => x.Name.Contains(keyword));
+            }
+
+            var totalRow = await query.CountAsync();
+
+            query = query.OrderByDescending(x => x.DateCreated)
+               .Skip((pageIndex - 1) * pageSize)
+               .Take(pageSize);
+
+            return new PageResult<PostInListDto>
+            {
+                Results = await _mapper.ProjectTo<PostInListDto>(query).ToListAsync(),
+                CurrentPage = pageIndex,
+                RowCount = totalRow,
+                PageSize = pageSize
+            };
+        }
+
         public async Task<PageResult<PostInListDto>> GetPostsPagingAsync(string? keyword, Guid currentUserId, Guid? categoryId, int pageIndex = 1, int pageSize = 10)
         {
             var user = await _userManager.FindByIdAsync(currentUserId.ToString());
@@ -138,7 +163,7 @@ namespace AbcBlog.Data.Repositories
             }
             var roles = await _userManager.GetRolesAsync(user);
             var canApprove = false;
-            if (roles.Contains(Roles.Admin))
+            if (roles.Contains(Core.SeedWorks.Constants.Roles.Admin))
             {
                 canApprove = true;
             }
