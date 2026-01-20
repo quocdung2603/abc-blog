@@ -1,14 +1,14 @@
 ﻿using AbcBlog.Core.SeedWorks;
 using AbcBlog.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace AbcBlog.WebApp.Controllers
 {
     public class PostController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public PostController(IUnitOfWork unitOfWork) {
+        public PostController(IUnitOfWork unitOfWork)
+        {
             _unitOfWork = unitOfWork;
         }
 
@@ -23,10 +23,11 @@ namespace AbcBlog.WebApp.Controllers
         {
             var post = await _unitOfWork.Posts.GetPostsByCategoryPagingAsync(categorySlug, page, 2);
             var category = await _unitOfWork.PostCategories.GetBySlug(categorySlug);
-            return View(new PostListByCategoryViewModel() {
+            return View(new PostListByCategoryViewModel()
+            {
                 Category = category,
                 Posts = post
-                
+
             });
         }
 
@@ -52,7 +53,7 @@ namespace AbcBlog.WebApp.Controllers
             {
                 Post = post,
                 Category = category,
-                Tags = tag  
+                Tags = tag
             });
         }
     }

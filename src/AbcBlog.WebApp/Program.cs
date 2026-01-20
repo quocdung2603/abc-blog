@@ -1,6 +1,7 @@
 using AbcBlog.Core;
 using AbcBlog.Core.ConfigOptions;
 using AbcBlog.Core.Domain.Identity;
+using AbcBlog.Core.Events.LoginSuccessed;
 using AbcBlog.Core.Models.Content;
 using AbcBlog.Core.SeedWorks;
 using AbcBlog.Data.Repositories;
@@ -24,6 +25,7 @@ builder.Services.Configure<SystemConfig>(configuration.GetSection("SystemConfig"
 
 builder.Services.AddDbContext<AbcBlogContext>(options => options.UseSqlServer(connectionString));
 
+#region Configure Identity
 builder.Services.AddIdentity<AppUser, AppRole>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<AbcBlogContext>()
                 .AddDefaultTokenProviders();
@@ -48,6 +50,15 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.User.RequireUniqueEmail = true;
 });
 
+//Method & Token
+builder.Services.AddScoped<SignInManager<AppUser>, SignInManager<AppUser>>();
+builder.Services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
+builder.Services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
+
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>();
+#endregion
+
+#region Config Services
 // Add services to the container.
 builder.Services.AddScoped(typeof(IRepository<,>), typeof(RepositoryBase<,>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -66,16 +77,13 @@ foreach (var service in services)
         builder.Services.Add(new ServiceDescriptor(directInterface, service, ServiceLifetime.Scoped));
     }
 }
+#endregion
 
 //Config AutoMapper
 builder.Services.AddAutoMapper(typeof(PostInListDto));
 
-//Method & Token
-builder.Services.AddScoped<SignInManager<AppUser>, SignInManager<AppUser>>();
-builder.Services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
-builder.Services.AddScoped<RoleManager<AppRole>, RoleManager<AppRole>>();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(LoginSuccessedEvent).Assembly));
 
-builder.Services.AddScoped<IUserClaimsPrincipalFactory<AppUser>, CustomClaimsPrincipalFactory>();
 
 //start pipeline
 var app = builder.Build();
